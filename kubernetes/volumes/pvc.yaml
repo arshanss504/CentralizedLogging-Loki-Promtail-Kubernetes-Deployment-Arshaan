@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-logs-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###
+
+#This is my persistent volume claim configuration file. 
+#It is used to create a persistent volume claim that will be used by the pod to mount the persistent volume.
+
+
+#In Kubernetes, the term "releasing" a Persistent Volume (PV) refers to the process that occurs when a Persistent Volume Claim (PVC) that is bound to the PV is deleted. When the PVC is deleted, the PV is released from its claim, meaning it is no longer bound to any PVC. 
+#Retain: The PV is not deleted and remains in the "Released" state. The data on the volume is preserved, and an administrator must manually reclaim the volume and prepare it for reuse.
+#Recycle: The PV is deleted and made available for a new claim. This policy is deprecated and not recommended for use.
+#Delete: The PV is deleted and made available for a new claim. 

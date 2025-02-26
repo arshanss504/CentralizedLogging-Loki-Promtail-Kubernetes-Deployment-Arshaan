@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: promtail
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: promtail
+  template:
+    metadata:
+      labels:
+        app: promtail
+    spec:
+      containers:
+      - name: promtail
+        image: grafana/promtail:latest
+        args:
+          - -config.file=/etc/promtail/promtail-config.yaml
+        volumeMounts:
+          - name: logs-storage
+            mountPath: /logs
+          - name: positions-storage
+            mountPath: /var/log  # Positions file now mapped correctly!
+          - name: config
+            mountPath: /etc/promtail
+            readOnly: true
+      volumes:
+      - name: logs-storage
+        persistentVolumeClaim:
+          claimName: my-logs-pvc
+      - name: positions-storage
+        emptyDir: {}  # Ensures positions.yaml persists during pod lifecycle. Added emptyDir volume for /var/log → Ensures Promtail doesn't lose its position tracking while the Pod is running.
+      - name: config
+        configMap:
+          name: promtail-config
+
+
+
+
+
+
+
+
+
+
+
+
+# if positions.yaml file is not mapped to any persistent storage, it will be lost when the pod is restarted.
+
+# If positions.yaml is lost, Promtail will re-read old logs, cause duplicates, miss logs, overload Loki, and create false/missed alerts in Grafana.
+
+# ✅ To prevent this, always mount /var/log/positions.yaml to a persistent storage volume (PVC in Kubernetes).
+
+# ✅ If you don't have a persistent storage volume, use an emptyDir volume to ensure positions.yaml persists during the pod lifecycle.
+
+# If you want positions.yaml to persist even after pod restarts, replace emptyDir with a Persistent Volume Claim (PVC):
