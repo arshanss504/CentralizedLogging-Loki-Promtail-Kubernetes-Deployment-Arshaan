@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-logs-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  gcePersistentDisk:
+    pdName: my-logs-disk
+    fsType: ext4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###
+
+
+#This is my persistent volume configuration file. It is used to create a persistent volume that will be used by the persistent volume claim to create a persistent volume claim. The persistent volume is created with a capacity of 10Gi, access mode of ReadWriteOnce, and a persistent volume reclaim policy of Retain. The persistent volume is backed by a GCE persistent disk with the name my-logs-disk and file system type of ext4.
+#Before this you have to create a persistent disk in GCP and then you can use that disk in this configuration file.
+
+
+#About Readwrite access modes:
+# In Kubernetes, ReadWriteMany is one of the access modes for Persistent Volumes (PVs). 
+# It allows the volume to be mounted as read-write by multiple nodes simultaneously. 
+# This is useful for scenarios where multiple pods running on different nodes need to read from and write to the same volume concurrently.
+
+
+#My-Notes:
+
+#Google Compute Engine (GCE) Persistent Disks do not support the ReadWriteMany access mode. 
+#If you need a Persistent Volume with ReadWriteMany access mode, you should use Google Cloud Filestore instead.
+#To check if your persistent disk supports ReadWriteMany, you can refer to the documentation of the storage provider.
+#For GCE Persistent Disks, they only support ReadWriteOnce and ReadOnlyMany.
+#If you need ReadWriteMany, you can use Google Cloud Filestore.

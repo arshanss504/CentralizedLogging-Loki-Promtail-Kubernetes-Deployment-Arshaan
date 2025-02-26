@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-python-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-python-app
+  template:
+    metadata:
+      labels:
+        app: my-python-app
+    spec:
+      containers:
+      - name: my-python-app
+        image: my-python-app:latest
+        volumeMounts:
+        - name: logs-storage
+          mountPath: /app/logs  # Ensure your app writes logs here
+      volumes:
+      - name: logs-storage
+        persistentVolumeClaim:
+          claimName: my-logs-pvc
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service
+  labels:
+    app: my-app
+spec:
+  selector:
+    app: my-app  # Matches the labels in your Deployment
+  ports:
+    - protocol: TCP
+      port: 80        # External port (ClusterIP)
+      targetPort: 5000  # Internal container port (Python app)
+  type: NodePort # Can be LoadBalancer or NodePort if needed

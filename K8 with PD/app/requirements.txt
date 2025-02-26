@@ -1,0 +1,25 @@
+fastapi
+uvicorn
+prometheus_client
+psutil
+starlette
+opentelemetry-sdk
+opentelemetry-exporter-otlp
+opentelemetry-exporter-prometheus
+opentelemetry-instrumentation-fastapi
+opentelemetry-instrumentation-logging
+opentelemetry-instrumentation-requests
+opentelemetry-exporter-prometheus
+
+# OpenTelemetry Core SDK
+opentelemetry-api
+opentelemetry-sdk
+
+
+# OpenTelemetry Exporters (for sending traces, logs, and metrics)
+opentelemetry-exporter-otlp-proto-grpc  # OTLP over gRPC (for traces)
+
+# OpenTelemetry Context Propagation (ensures distributed tracing across services)
+opentelemetry-propagator-b3  # B3 Propagation
+opentelemetry-propagator-jaeger  # Jaeger Propagation
+
